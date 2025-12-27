@@ -6,6 +6,7 @@ resources:
       schedule:
         quartz_cron_expression: "0 0 9 * * ?"
         timezone_id: "America/Mexico_City"
+        pause_status: "UNPAUSED"
       
       tasks:
         - task_key: run_deezer_top_tracks
@@ -14,6 +15,11 @@ resources:
           spark_python_task:
             # Note: Ensure this path matches where your file is uploaded
             python_file: ${workspace.file_path}/src/deezer_top_tracks_ingestor.py
+        - task_key: refresh_deezer_dashboard
+          depends_on:
+            - task_key: run_deezer_top_tracks
+          dashboard_task:
+            dashboard_id: ${resources.dashboards.deezer_dashboard.id}
 
       environments:
         - environment_key: "deezer_env"
