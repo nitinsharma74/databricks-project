@@ -1,0 +1,6 @@
+resources:
+  dashboards:
+    deezer_top_tracks_last_30_days:
+      display_name: "Deezer Top Tracks - Last 30 Days"
+      warehouse_id: "7c12c19f5f977de5"
+      file_path: ../dashboards/deezer_top_tracks_last_30_days.lvdash.json
