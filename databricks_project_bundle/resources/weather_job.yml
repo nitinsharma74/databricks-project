@@ -1,0 +1,27 @@
+resources:
+  jobs:
+    hourly_weather_report:
+      name: hourly-weather-report
+      
+      schedule:
+        quartz_cron_expression: "0 0 * * * ?"
+        timezone_id: "America/Mexico_City"
+        pause_status: "UNPAUSED"
+      
+      tasks:
+        - task_key: run_hourly_weather
+          environment_key: "weather_env"
+          spark_python_task:
+            # Note: Ensure this path matches where your file is uploaded
+            python_file: ${workspace.file_path}/src/weather_hourly_ingestor.py
+        - task_key: refresh_weather_dashboard
+          depends_on:
+            - task_key: run_hourly_weather
+          dashboard_task:
+            dashboard_id: ${resources.dashboards.weather_dashboard.id}
+
+      environments:
+        - environment_key: "weather_env"
+          spec:
+            environment_version: "3"
+            dependencies: []
