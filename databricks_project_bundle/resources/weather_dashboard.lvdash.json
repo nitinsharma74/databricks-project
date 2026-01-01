@@ -1,0 +1,160 @@
+{
+  "datasets": [
+    {
+      "name": "b6c3a5a1",
+      "displayName": "hourly_weather_dataset",
+      "queryLines": [
+        "select\n",
+        "  station_id,\n",
+        "  station_name,\n",
+        "  observation_timestamp,\n",
+        "  text_description,\n",
+        "  temperature_value,\n",
+        "  temperature_unit,\n",
+        "  wind_speed_value,\n",
+        "  wind_speed_unit,\n",
+        "  wind_direction_value,\n",
+        "  wind_direction_unit,\n",
+        "  visibility_value,\n",
+        "  visibility_unit,\n",
+        "  max_temperature_last_24_hours_value,\n",
+        "  max_temperature_last_24_hours_unit,\n",
+        "  min_temperature_last_24_hours_value,\n",
+        "  min_temperature_last_24_hours_unit\n",
+        "from workspace.default.hourly_weather_report\n",
+        "where observation_timestamp >= current_timestamp() - INTERVAL 72 HOURS"
+      ]
+    }
+  ],
+  "pages": [
+    {
+      "name": "c2a2d243",
+      "displayName": "Daily Trend",
+      "layout": [
+        {
+          "widget": {
+            "name": "b402b696",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## <span style=\"text-align:center;display:block;\">HOURLY WEATHER REPORT (KJFK)</span>"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 6,
+            "height": 1
+          }
+        },
+        {
+          "widget": {
+            "name": "2f41d690",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "b6c3a5a1",
+                  "fields": [
+                    {
+                      "name": "observation_timestamp",
+                      "expression": "`observation_timestamp`"
+                    },
+                    {
+                      "name": "temperature_value",
+                      "expression": "`temperature_value`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "observation_timestamp",
+                  "scale": {
+                    "type": "continuous"
+                  },
+                  "title": "Observation Timestamp"
+                },
+                "y": {
+                  "fieldName": "temperature_value",
+                  "scale": {
+                    "type": "continuous"
+                  },
+                  "title": "Temperature"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 1,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "8b81a9e1",
+            "queries": [
+              {
+                "name": "wind_query",
+                "query": {
+                  "datasetName": "b6c3a5a1",
+                  "fields": [
+                    {
+                      "name": "observation_timestamp",
+                      "expression": "`observation_timestamp`"
+                    },
+                    {
+                      "name": "wind_speed_value",
+                      "expression": "`wind_speed_value`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "observation_timestamp",
+                  "scale": {
+                    "type": "continuous"
+                  },
+                  "title": "Observation Timestamp"
+                },
+                "y": {
+                  "fieldName": "wind_speed_value",
+                  "scale": {
+                    "type": "continuous"
+                  },
+                  "title": "Wind Speed"
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 6,
+            "width": 6,
+            "height": 5
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}

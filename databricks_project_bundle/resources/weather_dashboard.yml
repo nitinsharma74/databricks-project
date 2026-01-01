@@ -1,0 +1,6 @@
+resources:
+  dashboards:
+    weather_dashboard:
+      display_name: "Hourly Weather Report"
+      file_path: weather_dashboard.lvdash.json
+      warehouse_id: "7c12c19f5f977de5"

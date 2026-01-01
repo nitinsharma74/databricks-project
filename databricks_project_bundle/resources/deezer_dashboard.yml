@@ -1,6 +1,0 @@
-resources:
-  dashboards:
-    deezer_dashboard:
-      display_name: "Deezer Daily Trend"
-      file_path: deezer_dashboard.lvdash.json
-      warehouse_id: "7c12c19f5f977de5"
