@@ -27,7 +27,7 @@ targets:
       root_path: /Workspace/Users/${workspace.current_user.userName}/GitHub Repository Bundles/${bundle.name}/${bundle.target}
     variables:
       catalog: workspace
-      schema: ${workspace.current_user.short_name}
+      schema: default
   prod:
     mode: production
     workspace:
@@ -35,7 +35,7 @@ targets:
       root_path: /Workspace/Users/${workspace.current_user.userName}/GitHub Repository Bundles/${bundle.name}/${bundle.target}
     variables:
       catalog: workspace
-      schema: prod
+      schema: default
     permissions:
       - group_name: users
         level: CAN_MANAGE
