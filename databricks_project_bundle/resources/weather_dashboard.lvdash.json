@@ -21,7 +21,7 @@
         "  max_temperature_last_24_hours_unit,\n",
         "  min_temperature_last_24_hours_value,\n",
         "  min_temperature_last_24_hours_unit\n",
-        "from workspace.default.hourly_weather_report\n",
+        "from workspace.default.prod_hourly_weather_report\n",
         "where observation_timestamp >= current_timestamp() - INTERVAL 30 days"
       ]
     }

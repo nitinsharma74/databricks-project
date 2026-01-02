@@ -14,6 +14,9 @@ resources:
           spark_python_task:
             # Note: Ensure this path matches where your file is uploaded
             python_file: ${workspace.file_path}/src/weather_hourly_ingestor.py
+            parameters:
+              - "--table-name"
+              - "${var.catalog}.${var.schema}.${bundle.target}_hourly_weather_report"
         - task_key: refresh_weather_dashboard
           depends_on:
             - task_key: run_hourly_weather

@@ -1,4 +1,6 @@
 from datetime import datetime, timezone
+import argparse
+import logging
 
 import pandas as pd
 import requests
@@ -25,6 +27,8 @@ except ModuleNotFoundError:
         WEATHER_TABLE_NAME,
         REQUEST_TIMEOUT_SECONDS,
     )
+
+logger = logging.getLogger(__name__)
 
 
 class WeatherHourlyIngestor:
@@ -87,6 +91,7 @@ class WeatherHourlyIngestor:
         rows = []
         for station_id in self.station_ids:
             url = self.base_url.format(station_id=station_id)
+            logger.info("Fetching weather for station_id=%s url=%s", station_id, url)
             resp = requests.get(url, timeout=REQUEST_TIMEOUT_SECONDS)
             resp.raise_for_status()
             properties = resp.json().get("properties", {})
@@ -114,10 +119,12 @@ class WeatherHourlyIngestor:
         return pd.DataFrame(rows)
 
     def write_table(self, df: pd.DataFrame) -> None:
+        logger.info("Writing %d rows to table=%s", len(df.index), self.table_name)
         ordered_df = df[self.schema.fieldNames()]
         spark_df = self.spark.createDataFrame(ordered_df, schema=self.schema)
 
         if self.spark.catalog.tableExists(self.table_name):
+            logger.info("Table exists, performing delete+append")
             for _, row in df.iterrows():
                 station_id = row["station_id"]
                 observation_timestamp = row["observation_timestamp"].isoformat()
@@ -134,12 +141,25 @@ class WeatherHourlyIngestor:
                 .saveAsTable(self.table_name)
             )
         else:
+            logger.info("Table missing, creating new table")
             spark_df.write.format("delta").mode("overwrite").saveAsTable(self.table_name)
 
     def run(self) -> None:
+        logger.info(
+            "Starting ingestion for stations=%s table=%s",
+            ",".join(self.station_ids),
+            self.table_name,
+        )
         df = self.fetch_hourly_weather()
         self.write_table(df)
 
+def _parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Ingest hourly weather observations.")
+    parser.add_argument("--table-name", default=WEATHER_TABLE_NAME)
+    return parser.parse_args()
+
 
 if __name__ == "__main__":
-    WeatherHourlyIngestor().run()
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+    args = _parse_args()
+    WeatherHourlyIngestor(table_name=args.table_name).run()
