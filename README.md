@@ -4,3 +4,4 @@ This repository contains ETL pipelines on Databricks.
 
 Projects:
 - hourly_weather_report
+- reddit_sentiment_analysis
