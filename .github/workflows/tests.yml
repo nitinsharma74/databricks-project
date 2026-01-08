@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: databricks_project_bundle
+        working-directory: hourly_weather_report
     steps:
       - uses: actions/checkout@v4
 

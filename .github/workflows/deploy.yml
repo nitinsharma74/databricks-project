@@ -26,7 +26,7 @@ jobs:
       env:
         DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
         DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-      working-directory: databricks_project_bundle
+      working-directory: hourly_weather_report
       run: databricks bundle validate
 
   deploy:
@@ -47,7 +47,7 @@ jobs:
         env:
           DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
           DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
-        working-directory: databricks_project_bundle
+        working-directory: hourly_weather_report
         run: |
           databricks bundle validate
           databricks bundle deploy --target ${{ secrets.BUNDLE_TARGET }} --auto-approve
