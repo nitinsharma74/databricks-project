@@ -1,4 +1,4 @@
-# Weather ETL Portfolio Project
+# Hourly Weather ETL Project
 
 An end-to-end data engineering project that ingests hourly NOAA weather observations, stores them in Delta Lake on Databricks, and refreshes a dashboard on a schedule. The pipeline is designed to be small, readable, and easy to extend with new weather stations.
 
