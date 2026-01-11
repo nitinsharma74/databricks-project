@@ -1,73 +1,47 @@
 {
   "datasets": [
     {
-      "name": "b6c3a5a1",
-      "displayName": "hourly_weather_dataset",
+      "name": "hourly_weather_dataset",
+      "displayName": "Hourly Weather Dataset",
       "queryLines": [
-        "select\n",
-        "  station_id,\n",
-        "  station_name,\n",
-        "  observation_timestamp,\n",
-        "  text_description,\n",
-        "  temperature_value,\n",
-        "  temperature_unit,\n",
-        "  wind_speed_value,\n",
-        "  wind_speed_unit,\n",
-        "  wind_direction_value,\n",
-        "  wind_direction_unit,\n",
-        "  visibility_value,\n",
-        "  visibility_unit,\n",
-        "  max_temperature_last_24_hours_value,\n",
-        "  max_temperature_last_24_hours_unit,\n",
-        "  min_temperature_last_24_hours_value,\n",
-        "  min_temperature_last_24_hours_unit\n",
-        "from workspace.default.prod_hourly_weather_report\n",
+        "select station_id, station_name, observation_timestamp, text_description, temperature_value, temperature_unit, wind_speed_value, wind_speed_unit, wind_direction_value, wind_direction_unit, visibility_value, visibility_unit, max_temperature_last_24_hours_value, min_temperature_last_24_hours_value ",
+        "from workspace.default.prod_hourly_weather_report ",
         "where observation_timestamp >= current_timestamp() - INTERVAL 30 days"
       ]
     }
   ],
   "pages": [
     {
-      "name": "c2a2d243",
+      "name": "daily_trend",
       "displayName": "Daily Trend",
+      "pageType": "PAGE_TYPE_CANVAS",
       "layout": [
         {
           "widget": {
-            "name": "b402b696",
+            "name": "dashboard_title",
             "multilineTextboxSpec": {
               "lines": [
                 "## <span style=\"text-align:center;display:block\">HOURLY WEATHER REPORT</span>"
               ]
             }
           },
-          "position": {
-            "x": 0,
-            "y": 0,
-            "width": 6,
-            "height": 1
-          }
+          "position": { "x": 0, "y": 0, "width": 6, "height": 1 }
         },
         {
           "widget": {
-            "name": "2f41d690",
+            "name": "hourly_temperature_per_station",
             "queries": [
               {
                 "name": "main_query",
                 "query": {
-                  "datasetName": "b6c3a5a1",
+                  "datasetName": "hourly_weather_dataset",
                   "fields": [
-                    {
-                      "name": "station_name",
-                      "expression": "`station_name`"
-                    },
+                    { "name": "station_name", "expression": "`station_name`" },
                     {
                       "name": "hourly(observation_timestamp)",
                       "expression": "DATE_TRUNC(\"HOUR\", `observation_timestamp`)"
                     },
-                    {
-                      "name": "temperature_value",
-                      "expression": "`temperature_value`"
-                    }
+                    { "name": "temperature_value", "expression": "`temperature_value`" }
                   ],
                   "disaggregated": true
                 }
@@ -79,27 +53,19 @@
               "encodings": {
                 "x": {
                   "fieldName": "hourly(observation_timestamp)",
-                  "displayName": "Date/Hour",
-                  "scale": {
-                    "type": "temporal"
-                  }
+                  "displayName": "Date / Hour",
+                  "scale": { "type": "temporal" }
                 },
                 "y": {
                   "fieldName": "temperature_value",
                   "displayName": "Temperature",
-                  "scale": {
-                    "type": "quantitative"
-                  }
+                  "scale": { "type": "quantitative" }
                 },
                 "color": {
                   "fieldName": "station_name",
-                  "legend": {
-                    "position": "bottom"
-                  },
                   "displayName": "Station",
-                  "scale": {
-                    "type": "categorical"
-                  }
+                  "scale": { "type": "categorical" },
+                  "legend": { "position": "bottom" }
                 }
               },
               "frame": {
@@ -108,34 +74,23 @@
               }
             }
           },
-          "position": {
-            "x": 0,
-            "y": 1,
-            "width": 6,
-            "height": 5
-          }
+          "position": { "x": 0, "y": 1, "width": 6, "height": 5 }
         },
         {
           "widget": {
-            "name": "8b81a9e1",
+            "name": "weather_description_per_hour",
             "queries": [
               {
                 "name": "main_query",
                 "query": {
-                  "datasetName": "b6c3a5a1",
+                  "datasetName": "hourly_weather_dataset",
                   "fields": [
-                    {
-                      "name": "station_name",
-                      "expression": "`station_name`"
-                    },
+                    { "name": "station_name", "expression": "`station_name`" },
                     {
                       "name": "hourly(observation_timestamp)",
                       "expression": "DATE_TRUNC(\"HOUR\", `observation_timestamp`)"
                     },
-                    {
-                      "name": "text_description",
-                      "expression": "`text_description`"
-                    }
+                    { "name": "text_description", "expression": "`text_description`" }
                   ],
                   "disaggregated": true
                 }
@@ -147,27 +102,19 @@
               "encodings": {
                 "x": {
                   "fieldName": "hourly(observation_timestamp)",
-                  "displayName": "Date/Hour",
-                  "scale": {
-                    "type": "temporal"
-                  }
+                  "displayName": "Date / Hour",
+                  "scale": { "type": "temporal" }
                 },
                 "y": {
                   "fieldName": "text_description",
                   "displayName": "Weather Description",
-                  "scale": {
-                    "type": "categorical"
-                  }
+                  "scale": { "type": "categorical" }
                 },
                 "color": {
                   "fieldName": "station_name",
-                  "legend": {
-                    "position": "bottom"
-                  },
                   "displayName": "Station",
-                  "scale": {
-                    "type": "categorical"
-                  }
+                  "scale": { "type": "categorical" },
+                  "legend": { "position": "bottom" }
                 }
               },
               "frame": {
@@ -176,21 +123,13 @@
               }
             }
           },
-          "position": {
-            "x": 0,
-            "y": 6,
-            "width": 6,
-            "height": 5
-          }
+          "position": { "x": 0, "y": 6, "width": 6, "height": 5 }
         }
-      ],
-      "pageType": "PAGE_TYPE_CANVAS"
+      ]
     }
   ],
   "uiSettings": {
-    "theme": {
-      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
-    },
+    "theme": {},
     "applyModeEnabled": false
   }
 }
